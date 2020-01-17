@@ -1,0 +1,6 @@
+framework module Pods_diagSwiftRealm {
+  umbrella header "Pods-diagSwiftRealm-umbrella.h"
+
+  export *
+  module * { export * }
+}

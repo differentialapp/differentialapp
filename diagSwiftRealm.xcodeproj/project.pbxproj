@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7315C88223D2273F007852A2 /* ContributeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7315C88123D2273F007852A2 /* ContributeViewController.swift */; };
+		7315C88423D38AFF007852A2 /* dataSet.realm in Resources */ = {isa = PBXBuildFile; fileRef = 7315C88323D38AFE007852A2 /* dataSet.realm */; };
+		7315C88623D39344007852A2 /* rocketClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7315C88523D39344007852A2 /* rocketClass.swift */; };
 		732F8CE523CFB26500B437E0 /* arcClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732F8CE423CFB26500B437E0 /* arcClass.swift */; };
 		732F8CE723D0CC3A00B437E0 /* FactorSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732F8CE623D0CC3A00B437E0 /* FactorSelectorViewController.swift */; };
 		732F8CE923D0D07300B437E0 /* factorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732F8CE823D0D07300B437E0 /* factorCell.swift */; };
@@ -24,6 +27,9 @@
 
 /* Begin PBXFileReference section */
 		2C2B71D06A3B4BB786AA8100 /* Pods_diagSwiftRealm.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_diagSwiftRealm.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7315C88123D2273F007852A2 /* ContributeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContributeViewController.swift; sourceTree = "<group>"; };
+		7315C88323D38AFE007852A2 /* dataSet.realm */ = {isa = PBXFileReference; lastKnownFileType = file; path = dataSet.realm; sourceTree = "<group>"; };
+		7315C88523D39344007852A2 /* rocketClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = rocketClass.swift; sourceTree = "<group>"; };
 		732F8CE423CFB26500B437E0 /* arcClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = arcClass.swift; sourceTree = "<group>"; };
 		732F8CE623D0CC3A00B437E0 /* FactorSelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FactorSelectorViewController.swift; sourceTree = "<group>"; };
 		732F8CE823D0D07300B437E0 /* factorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = factorCell.swift; sourceTree = "<group>"; };
@@ -90,11 +96,14 @@
 				7395132823CF5265005BEB40 /* SecondViewController.swift */,
 				732F8CE623D0CC3A00B437E0 /* FactorSelectorViewController.swift */,
 				73B5BBF623CA0A7200D99BC7 /* Main.storyboard */,
+				7315C88123D2273F007852A2 /* ContributeViewController.swift */,
 				732F8CE423CFB26500B437E0 /* arcClass.swift */,
 				7395132623CE19AB005BEB40 /* diagnosisCell.swift */,
+				7315C88523D39344007852A2 /* rocketClass.swift */,
 				732F8CE823D0D07300B437E0 /* factorCell.swift */,
 				73B5BBF923CA0A7800D99BC7 /* Assets.xcassets */,
 				73B5BBFB23CA0A7800D99BC7 /* LaunchScreen.storyboard */,
+				7315C88323D38AFE007852A2 /* dataSet.realm */,
 				73B5BBFE23CA0A7800D99BC7 /* Info.plist */,
 				73B5BC0423CA33C200D99BC7 /* Factor.swift */,
 			);
@@ -171,6 +180,7 @@
 			files = (
 				73B5BBFD23CA0A7800D99BC7 /* LaunchScreen.storyboard in Resources */,
 				73B5BBFA23CA0A7800D99BC7 /* Assets.xcassets in Resources */,
+				7315C88423D38AFF007852A2 /* dataSet.realm in Resources */,
 				73B5BBF823CA0A7200D99BC7 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -225,11 +235,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				7395132923CF5265005BEB40 /* SecondViewController.swift in Sources */,
+				7315C88223D2273F007852A2 /* ContributeViewController.swift in Sources */,
 				73B5BBF523CA0A7200D99BC7 /* ViewController.swift in Sources */,
 				7395132723CE19AB005BEB40 /* diagnosisCell.swift in Sources */,
 				732F8CE523CFB26500B437E0 /* arcClass.swift in Sources */,
 				732F8CE723D0CC3A00B437E0 /* FactorSelectorViewController.swift in Sources */,
 				73B5BBF123CA0A7200D99BC7 /* AppDelegate.swift in Sources */,
+				7315C88623D39344007852A2 /* rocketClass.swift in Sources */,
 				73B5BC0523CA33C200D99BC7 /* Factor.swift in Sources */,
 				732F8CE923D0D07300B437E0 /* factorCell.swift in Sources */,
 				73B5BBF323CA0A7200D99BC7 /* SceneDelegate.swift in Sources */,

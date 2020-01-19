@@ -13,28 +13,42 @@ class SecondViewController: UIViewController {
     
     
     @IBOutlet weak var shipPic1: UIImageView!
+    @IBOutlet weak var shipPic2: UIImageView!
     @IBOutlet weak var arcView: CounterView!
+    @IBOutlet weak var arcView2: CounterView2!
     @IBOutlet weak var topDirectiveLabel: UILabel!
     @IBOutlet weak var readyButton: UIButton!
     
-//    var shipPic: UIImageView?
-    var preTestProbability: Double = 10.0
     var preTestLabel = UILabel()
+    var preTestLabel2 = UILabel()
     var readyForSelection = false
     var selectedDiagnoses: [String] = []
-    var selectedFactor: Factor?
-    var launchButton: UIButton?
-    var finalShowLabel = UILabel()
+    var launchButton = UIButton()
     var finalShowBool = false
+    var negLRBoolean = false
+    var shipSelected: Int = 1
+    var finalShowLabel1 = UILabel()
+    var finalShowLabel2 = UILabel()
+    var rocket1: Rocket?
+    var rocket2: Rocket?
+    var finalShowButton1: UIButton?
+    var finalShowButton2: UIButton?
     
     override func viewDidLoad() {
-//        super.viewDidLoad()
-//        shipPic = UIImageView()
-//        shipPic?.image = UIImage(named: "spaceShip.png")
         view.addSubview(shipPic1)
+        
         shipPic1.center = CGPoint(x: 52.10828290506163, y: 646.0)
-        if selectedFactor != nil {
-            print(selectedFactor!)
+        shipPic2.center = CGPoint(x: 255.85491373152524, y: 719.3333282470703)
+        
+        if  selectedDiagnoses.count == 1 {
+            rocket1 = Rocket(diagnosis: selectedDiagnoses[0], imageContainer: shipPic1, arcContainer: arcView, preTestProbability: 10.0)
+        } else if selectedDiagnoses.count == 2 {
+            view.bringSubviewToFront(arcView2)
+            rocket1 = Rocket(diagnosis: selectedDiagnoses[0], imageContainer: shipPic1, arcContainer: arcView, preTestProbability: 10.0)
+            rocket2 = Rocket(diagnosis: selectedDiagnoses[1], imageContainer: shipPic2, arcContainer: arcView2, preTestProbability: 10.0)
+            rocket2?.arcOpensRight = false
+            view.addSubview(shipPic2)
+            view.bringSubviewToFront(shipPic2)
         }
     }
     
@@ -42,69 +56,62 @@ class SecondViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
     
+    // HANDLE TOUCH EVENTS
+    // HANDLE MOVEMENT WITH DRAGGING
+    // -----------------------------------------------------------
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if !readyForSelection {
             for touch in touches {
-
-                //________________________________
-                //Uses Pythagorean Theorem to calculate location on arc
-                //
-                //________________________________
-                //
-                // b = sqrt( c2 - a2 )
-                //
-                // c = radius of arc, defined in arcClass (3 * hvar / 2 - 2.5)
-                // a = touch y coordinate (tyvar) - arc center y coordinate (cyvar)
-                
-                
                 let location = touch.location(in: self.view)
                 
-                var ylocation: CGFloat = 0
-                
-                let bottomBound = arcView.center.y + arcView.frame.height / 2 //Was 683 before
-                let upperBound = arcView.center.y - arcView.frame.height / 2 + shipPic1.frame.height
-                
-                if location.y < upperBound {
-                    ylocation = upperBound
-                } else if location.y > bottomBound {
-                    ylocation = bottomBound
-                } else {
-                    ylocation = location.y
+                if shipPic2.frame.contains(location) {
+                    let ylocation = rocket2?.containWithInBounds(yvalue: location.y)
+                    
+                    //Move Ship
+                    //------------------
+                    let xlocation = rocket2?.move(yTouchValue: ylocation!)
+                    shipPic2.center = CGPoint(x: xlocation!, y: ylocation!)
+                    
+                    //Calculate PreTest Prob
+                    rocket2?.setPreTest(yvalue: ylocation!)
+                    
+                    //Create label
+                    preTestLabel2 = rocket2?.makePreTestLabel() ?? UILabel()
+                    preTestLabel2.center = CGPoint(x: xlocation! - 60, y: ylocation! + 60)
+                    view.addSubview(preTestLabel2)
                 }
-                
-                let xlocation = moveRocket(yvalue: ylocation)
                 
                 if shipPic1.frame.contains(location) {
-                    shipPic1.center = CGPoint(x: xlocation, y: ylocation)
-                    let range = Double(bottomBound - upperBound)
-                    preTestProbability = (range - (Double(ylocation) - Double(upperBound))) / (range / 100)
+                    let ylocation = rocket1?.containWithInBounds(yvalue: location.y)
+                    //Move Ship
+                    //------------------
+                    let xlocation = rocket1?.move(yTouchValue: ylocation!)
+                    shipPic1.center = CGPoint(x: xlocation!, y: ylocation!)
                     
-                    //preTestLabel?.font =
-                    let labelText = "Pre-test Probability: \n" + String(format:"%.1f", preTestProbability) + "%"
-                    preTestLabel.text = labelText
-                    preTestLabel.backgroundColor = UIColor.white
-                    preTestLabel.textAlignment = .center
-                    preTestLabel.numberOfLines = 2
-                    preTestLabel.layer.masksToBounds = true
-                    preTestLabel.layer.cornerRadius = 10
-                    preTestLabel.sizeToFit()
-                    preTestLabel.center = CGPoint(x: xlocation + 60, y: ylocation + 60)
+                    //Calculate PreTest Prob
+                    rocket1?.setPreTest(yvalue: ylocation!)
+                    
+                    //Create label
+                    preTestLabel = rocket1?.makePreTestLabel() ?? UILabel()
+                    preTestLabel.center = CGPoint(x: xlocation! + 60, y: ylocation! + 60)
                     view.addSubview(preTestLabel)
                 }
+                
             }
         } else {
             for touch in touches {
                 let location = touch.location(in: self.view)
                 if shipPic1.frame.contains(location) && !finalShowBool {
+                    shipSelected = 1
+                    performSegue(withIdentifier: "modalFactorSegue", sender: self)
+                }
+                if shipPic2.frame.contains(location) && !finalShowBool {
+                    shipSelected = 2
                     performSegue(withIdentifier: "modalFactorSegue", sender: self)
                 }
             }
         }
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let vc = segue.destination as! FactorSelectorViewController
-        vc.selectedDiagnosis = selectedDiagnoses[0]
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -113,30 +120,40 @@ class SecondViewController: UIViewController {
                 
                 let location = touch.location(in: self.view)
                 
-                var ylocation: CGFloat = 0
-                
-                let bottomBound = arcView.center.y + arcView.frame.height / 2 //Was 683 before
-                let upperBound = arcView.center.y - arcView.frame.height / 2 + shipPic1.frame.height
-                
-                if location.y < upperBound {
-                    ylocation = upperBound
-                } else if location.y > bottomBound {
-                    ylocation = bottomBound
-                } else {
-                    ylocation = location.y
-                }
-                
-                let xlocation = moveRocket(yvalue: ylocation)
+                if shipPic2.frame.contains(location) {
+                    let ylocation = rocket2?.containWithInBounds(yvalue: location.y)
+                    
+                    //Move Ship
+                    //------------------
+                    
+                    let xlocation = rocket2?.move(yTouchValue: ylocation!)
+                    shipPic2.center = CGPoint(x: xlocation!, y: ylocation!)
 
-                if shipPic1.frame.contains(location) {
-                    shipPic1.center = CGPoint(x: xlocation, y: ylocation)
-                    preTestLabel.center = CGPoint(x: xlocation + 60, y: ylocation + 60)
-                    let range = Double(bottomBound - upperBound)
-                    preTestProbability = (range - (Double(ylocation) - Double(upperBound))) / (range / 100)
-                    let labelText = "Pre-test Probability: \n" + String(format:"%.1f", preTestProbability) + "%"
-                    preTestLabel.text = labelText
+                    //Calculate PreTest Prob and Update Label
+                    rocket2?.setPreTest(yvalue: ylocation!)
+                    let labelText = "\(rocket2?.diagnosis ?? "Not found")\nPre-test Probability: \n" + String(format:"%.1f", rocket2!.preTestProbability) + "%"
+                    preTestLabel2.text = labelText
+                    preTestLabel2.center = CGPoint(x: xlocation! - 60, y: ylocation! + 60)
                 }
                 
+                if shipPic1.frame.contains(location) {
+                    
+                    let ylocation = rocket1?.containWithInBounds(yvalue: location.y)
+                    
+                    //Move Ship
+                    //------------------
+                    
+                    let xlocation = rocket1?.move(yTouchValue: ylocation!)
+                    shipPic1.center = CGPoint(x: xlocation!, y: ylocation!)
+                    
+                    //Calculate PreTest Prob
+                    rocket1?.setPreTest(yvalue: ylocation!)
+                    
+                    //Calculate PreTest Prob and Update Label
+                    let labelText = "\(rocket1?.diagnosis ?? "Not Found")\nPre-test Probability: \n" + String(format:"%.1f", rocket1!.preTestProbability) + "%"
+                    preTestLabel.text = labelText
+                    preTestLabel.center = CGPoint(x: xlocation! + 60, y: ylocation! + 60)
+                }
 
             }
         }
@@ -145,8 +162,12 @@ class SecondViewController: UIViewController {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if !readyForSelection {
             preTestLabel.removeFromSuperview()
+            preTestLabel2.removeFromSuperview()
         }
     }
+    
+    // IBACTIONS: Change between different modes
+    // -----------------------------------------------------------
     
     @IBAction func changeToSelectionMode(_ sender: Any) {
         readyForSelection = true
@@ -155,88 +176,94 @@ class SecondViewController: UIViewController {
     }
     
     @IBAction func backUpTo2(_ sender: UIStoryboardSegue) {
-        launchButton = UIButton()
-        launchButton!.setTitle("Launch", for: .normal)
-        launchButton!.frame = CGRect(x: 10, y: 100, width: 200, height: 90)
-        launchButton!.backgroundColor = UIColor.blue
-        launchButton!.center = CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height - 100)
-        launchButton!.addTarget(self, action: #selector(launchRocket), for: .touchUpInside)
-        view.addSubview(launchButton!)
-        //print(selectedFactor)
+        launchButton.setTitle("Launch!", for: .normal)
+        launchButton.frame = CGRect(x: 10, y: 100, width: 200, height: 90)
+        launchButton.backgroundColor = UIColor.systemIndigo
+        launchButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 25)
+        launchButton.center = CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height - 100)
+        launchButton.addTarget(self, action: #selector(launchAllRockets), for: .touchUpInside)
+        view.addSubview(launchButton)
     }
     
-    func moveRocket(yvalue: CGFloat) -> CGFloat {
-        let sxvar = (arcView.center.x - arcView.frame.width / 2)
-        let cxvar = sxvar + (3 * arcView.frame.width)
-        let hvar = arcView.frame.height
-        let tyvar = yvalue
-        let cyvar = (1.25 * arcView.frame.height) + (arcView.center.y - arcView.frame.height/2)
-        let bvar2 = ( pow(((3 * hvar)/2 - 2.5),2) - pow(cyvar - tyvar, 2) )
-        let xlocation = cxvar - bvar2.squareRoot()
-        
-        return xlocation
-    }
+    // SEGUE PREP
+    // -----------------------------------------------------------
     
-    @objc func launchRocket() {
-        print("LAUNCHING ROCKET")
-        
-        let preTestOdds = (preTestProbability/100) / (1 - (preTestProbability/100))
-        let postTestOdds = preTestOdds * (selectedFactor?.posLR ?? 1.0) //FIX LATER, ERROR EXIT?
-        let postTestProbability = (postTestOdds / (1 + postTestOdds))
-        
-        print("Post Test Probability", postTestProbability)
-        
-        let bottomBound = arcView.center.y + arcView.frame.height / 2 //Was 683 before
-        let upperBound = arcView.center.y - arcView.frame.height / 2 + shipPic1.frame.height
-        let range = Double(bottomBound - upperBound)
-        let yposition = (range - (postTestProbability * range)) + Double(upperBound)
-        let yCG = CGFloat(yposition)
-        let xposition = moveRocket(yvalue: yCG)
-        let finalPosition = CGPoint(x: xposition, y: yCG)
-        
-        UIView.animate(withDuration: 1.0, delay: 0, options: .curveEaseIn, animations: {
-            self.shipPic1.center = finalPosition
-            }, completion: nil)
-        
-        //shipPic1.center = finalPosition
-        launchButton?.removeFromSuperview()
-        let notFound = "Not Found"
-        
-        var stringPosLR = ""
-        var stringNegLR = ""
-        let percPTProb = postTestProbability * 100
-        let stringPercPTProb = String(format: "%.1f", percPTProb)
-        
-        
-        if selectedFactor != nil {
-            stringPosLR = String(selectedFactor!.posLR)
-            stringNegLR = String(selectedFactor!.negLR)
-        } else {
-            stringPosLR = notFound
-            stringNegLR = notFound
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let vc = segue.destination as! FactorSelectorViewController
+        if shipSelected == 1 {
+            vc.selectedDiagnosis = rocket1!.diagnosis
+        } else if shipSelected == 2 {
+            vc.selectedDiagnosis = rocket2!.diagnosis
+            vc.factorNumber = 2
         }
-        // Now show labels
         
-        finalShowLabel.text =
-            """
-            Diagnosis: \(selectedFactor?.diagnosis ?? notFound)
-            Finding: \(selectedFactor?.name ?? notFound)
-            Positive Likelihood Ratio: \(stringPosLR)
-            Negative Likelihood Ratio: \(stringNegLR)
-            Pre-test Probability: \(preTestProbability)%
-            Post-test Probability: \(stringPercPTProb)%
-            """
-        
-        finalShowLabel.backgroundColor = UIColor.white
-        finalShowLabel.textAlignment = .center
-        finalShowLabel.numberOfLines = 6
-        finalShowLabel.layer.masksToBounds = true
-        finalShowLabel.layer.cornerRadius = 10
-        finalShowLabel.sizeToFit()
-        finalShowLabel.center = CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height - 100)
-        view.addSubview(finalShowLabel)
+    }
+    
+    // ROCKET LAUNCH
+    // -----------------------------------------------------------
+    
+    @objc func launchAllRockets() {
+        if rocket1?.factorSelected ?? false {
+            let finalPosition = rocket1?.launch()
+            UIView.animate(withDuration: 1.0, delay: 0, options: .curveEaseIn, animations: {
+                self.shipPic1.center = finalPosition!
+                }, completion: nil)
+            finalShowLabel1 = (rocket1?.createFinalLabel())!
+            finalShowLabel1.center = CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height - 100)
+            finalShowButton1 = createNumberButton(forWhat: "showLabel1")
+            view.addSubview(finalShowLabel1)
+            view.addSubview(finalShowButton1!)
+        }
+        if rocket2?.factorSelected ?? false {
+            let finalPosition = rocket2?.launch()
+            UIView.animate(withDuration: 1.0, delay: 0, options: .curveEaseIn, animations: {
+                self.shipPic2.center = finalPosition!
+                }, completion: nil)
+            finalShowLabel2 = (rocket2?.createFinalLabel())!
+            finalShowLabel2.center = CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height - 100)
+            finalShowButton2 = createNumberButton(forWhat: "showLabel2")
+            view.addSubview(finalShowLabel2)
+            view.addSubview(finalShowButton2!)
+        }
         topDirectiveLabel.text = "All Finished!"
         finalShowBool = true
+        view.bringSubviewToFront(finalShowLabel1)
+        launchButton.removeFromSuperview()
+    }
+    
+    // CREATE BUTTONS ABOVE FINAL RESULTS LABEL, TO ALLOW VIEWING EACH IN A TAB VIEW TYPE FORMAT
+    // -----------------------------------------------------------
+    
+    func createNumberButton(forWhat: String) -> UIButton {
+        let button = UIButton()
+        button.frame = CGRect(x: 50, y: 50, width: 100, height: 100)
+        button.backgroundColor = UIColor.clear
+        button.tintColor = .white
+        
+        if forWhat == "showLabel1" {
+            button.setTitle("Show: ", for: .normal)
+            button.setImage(UIImage(systemName: "1.circle.fill"), for: .normal)
+            button.center = CGPoint(x: UIScreen.main.bounds.width / 4, y: finalShowLabel1.frame.minY - 20)
+            //button.imageEdgeInsets = UIEdgeInsets(top: 50, left: 50, bottom: 50, right: 50)
+            button.addTarget(self, action: #selector(bringView1ToFront), for: .touchUpInside)
+        } else if forWhat == "showLabel2" {
+            
+            button.setTitle("Show: ", for: .normal)
+            button.setImage(UIImage(systemName: "2.circle.fill"), for: .normal)
+            button.center = CGPoint(x: 3 * UIScreen.main.bounds.width / 4, y: finalShowLabel2.frame.minY - 20)
+            button.addTarget(self, action: #selector(bringView2ToFront), for: .touchUpInside)
+        }
+        button.semanticContentAttribute = UIApplication.shared
+            .userInterfaceLayoutDirection == .rightToLeft ? .forceLeftToRight : .forceRightToLeft
+        button.imageView?.contentMode = .scaleAspectFill
+        return button
+    }
+    
+    @objc func bringView1ToFront() {
+        view.bringSubviewToFront(finalShowLabel1)
+    }
+    @objc func bringView2ToFront() {
+        view.bringSubviewToFront(finalShowLabel2)
     }
 }
 

@@ -13,27 +13,42 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var doneButton: UIButton!
     
-    let realm = try! Realm()
     var queryResult: Results<Factor>?
     var searchController: UISearchController!
     var uniqueDiagnoses: [String] = []
     var queriedDiagnoses: [String] = []
     var selectedDiagnoses: [String] = []
     
+    var realm: Realm?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
         tableView.delegate = self
         tableView.dataSource = self
-    
+        doneButton.isUserInteractionEnabled = false
+        
+        
+        
     }
 
     func setup() {
         view.backgroundColor = .white
+        
+        
         //Set up Model / Realm Database
-        //print(Realm.Configuration.defaultConfiguration.fileURL)
-        queryResult = realm.objects(Factor.self).sorted(byKeyPath: "diagnosis", ascending: true)
+        //------------------------------
+        let config = Realm.Configuration(
+        // Get the URL to the bundled file
+        fileURL: Bundle.main.url(forResource: "dataSet", withExtension: "realm"),
+        // Open the file in read-only mode as application bundles are not writeable
+        readOnly: true)
+        // Open the Realm with the configuration
+        realm = try! Realm(configuration: config)
+
+        queryResult = realm?.objects(Factor.self).sorted(byKeyPath: "diagnosis", ascending: true)
         for each in queryResult! {
             if !uniqueDiagnoses.contains(each.diagnosis!) {
                 uniqueDiagnoses.append(each.diagnosis!)
@@ -49,14 +64,19 @@ class ViewController: UIViewController {
         
     }
     
+    // HANDLE SEARCH QUERIES
+    // -----------------------------------------------------------
+    
     func filterDiagsFromSearch(searchTerm: String) {
         if searchTerm.count > 0 {
-            queryResult = realm.objects(Factor.self).filter("diagnosis contains '\(searchTerm)'")
+            queryResult = realm?.objects(Factor.self).filter("diagnosis contains '\(searchTerm)'")
             createDiagList()
         }
     }
     
+    
     @IBAction func resetDiagnoses(_ sender: Any) {
+        //CLEAR SELECTION, RESET DATABASE QUERY TO ALL
         resetDiagnoses2()
     }
     
@@ -80,12 +100,17 @@ class ViewController: UIViewController {
         tableView.reloadData()
     }
     
+    // -----------------------------------------------------------
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let vc = segue.destination as! SecondViewController
         vc.selectedDiagnoses = selectedDiagnoses
     }
     
 }
+
+// DELEGATES FOR SEARCH / SEARCH BAR
+// -----------------------------------------------------------
 
 extension ViewController: UISearchBarDelegate {
     
@@ -111,15 +136,23 @@ extension ViewController: UISearchResultsUpdating {
     }
 }
 
+// DELEGATES FOR TABLE
+// -----------------------------------------------------------
+
 extension ViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if selectedDiagnoses.count < 3 {
+        // LIMITS CHOICES TO 2, ONLY ADDS IF UNIQUE, OTHERWISE SENDS ALERT
+        
+        if selectedDiagnoses.count < 2 {
             if !selectedDiagnoses.contains(queriedDiagnoses[indexPath.row]) {
                 selectedDiagnoses.append(queriedDiagnoses[indexPath.row])
+                doneButton.isUserInteractionEnabled = true
+                doneButton.setTitle("Done", for: .normal)
+                doneButton.backgroundColor = UIColor.systemIndigo
             }
         } else {
-            let alertController = UIAlertController(title: "Limit reached", message: "Only 3 diagnoses at a time", preferredStyle: .alert)
+            let alertController = UIAlertController(title: "Limit reached", message: "Only 2 diagnoses at a time", preferredStyle: .alert)
             searchController.isActive = false
             let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
             alertController.addAction(okAction)
@@ -133,6 +166,8 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // WHEN CELL SELECTED, CREATES CHECKMARK OBJECT AND MOVES IT TO THE TOP OF ROWS
+        
         let cell = (tableView.dequeueReusableCell(withIdentifier: "Cell") as! diagnosisCell)
         let diag = queriedDiagnoses[indexPath.row]
         cell.setDiagnosis(diagnosis: diag)

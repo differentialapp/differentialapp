@@ -20,23 +20,34 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.069934703371067775" green="0.069934703371067775" blue="0.069934703371067775" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Differential" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XSZ-AJ-wDw">
-                                <rect key="frame" x="82" y="398" width="250" height="100"/>
-                                <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="u5L-9p-5SW">
+                                <rect key="frame" x="82" y="403" width="250" height="90"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="cOc-mC-OP0">
+                                        <rect key="frame" x="0.0" y="0.0" width="83.5" height="90"/>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Differential" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XSZ-AJ-wDw">
+                                        <rect key="frame" x="93.5" y="0.0" width="156.5" height="90"/>
+                                        <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="150" id="Cun-mL-OCh"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="250" id="6ys-Un-S00"/>
-                                    <constraint firstAttribute="height" constant="100" id="tyJ-pU-GM3"/>
+                                    <constraint firstAttribute="height" constant="90" id="nq5-ir-CPu"/>
+                                    <constraint firstAttribute="width" constant="250" id="rxi-Bb-XOo"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="31"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" red="0.11638467098764804" green="0.11638467098764804" blue="0.11638467098764804" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="XSZ-AJ-wDw" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="VtN-3O-F39"/>
-                            <constraint firstItem="XSZ-AJ-wDw" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="aAf-LJ-v7b"/>
+                            <constraint firstItem="u5L-9p-5SW" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="BYO-Ct-5kO"/>
+                            <constraint firstItem="u5L-9p-5SW" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="bZo-Jp-uMg"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -46,4 +57,7 @@
             <point key="canvasLocation" x="52.173913043478265" y="375"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="logo" width="83.5" height="83.5"/>
+    </resources>
 </document>

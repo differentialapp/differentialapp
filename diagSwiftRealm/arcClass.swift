@@ -24,19 +24,18 @@ import UIKit
   
   override func draw(_ rect: CGRect) {
     // 1
-    let center = CGPoint(x: bounds.width*3, y: (bounds.height * 1.25))
+    let center = CGPoint(x: bounds.width*3.2, y: (bounds.height * 0.8))
 
     // 2
-    let radius: CGFloat = max(bounds.width/2, bounds.height*3)
-    let finalRadius = radius/2 - Constants.arcWidth/2
+    let radius: CGFloat = bounds.width*3
 
     // 3
-    let startAngle: CGFloat = 1.061 * .pi
-    let endAngle: CGFloat = 15 * .pi / 12
+    let startAngle: CGFloat = 0.98 * .pi
+    let endAngle: CGFloat = 1.1245 * .pi //1.1111, .12
 
     // 4
     let path = UIBezierPath(arcCenter: center,
-                               radius: finalRadius,
+                               radius: radius,
                            startAngle: startAngle,
                              endAngle: endAngle,
                             clockwise: true)
@@ -64,19 +63,18 @@ import UIKit
   
   override func draw(_ rect: CGRect) {
     // 1
-    let center = CGPoint(x: 0 - bounds.width / 2, y: (bounds.height/2))
+    let center = CGPoint(x: 0 - bounds.width * 2, y: (bounds.height/2))
 
     // 2
-    let radius: CGFloat = bounds.height * 1.85
-    let finalRadius = radius/2 - Constants.arcWidth/2
+    let radius: CGFloat = bounds.width * 2.8
 
     // 3
-    let startAngle: CGFloat = 1.89 * .pi
-    let endAngle: CGFloat = 2.18 * .pi
+    let startAngle: CGFloat = 1.91 * .pi //1.94, .93
+    let endAngle: CGFloat = 2.15 * .pi
 
     // 4
     let path = UIBezierPath(arcCenter: center,
-                               radius: finalRadius,
+                               radius: radius,
                            startAngle: startAngle,
                              endAngle: endAngle,
                             clockwise: true)

@@ -35,7 +35,7 @@
 		732F8CE823D0D07300B437E0 /* factorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = factorCell.swift; sourceTree = "<group>"; };
 		7395132623CE19AB005BEB40 /* diagnosisCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = diagnosisCell.swift; sourceTree = "<group>"; };
 		7395132823CF5265005BEB40 /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
-		73B5BBED23CA0A7200D99BC7 /* diagSwiftRealm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = diagSwiftRealm.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		73B5BBED23CA0A7200D99BC7 /* Differential.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Differential.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		73B5BBF023CA0A7200D99BC7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		73B5BBF223CA0A7200D99BC7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		73B5BBF423CA0A7200D99BC7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -82,7 +82,7 @@
 		73B5BBEE23CA0A7200D99BC7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				73B5BBED23CA0A7200D99BC7 /* diagSwiftRealm.app */,
+				73B5BBED23CA0A7200D99BC7 /* Differential.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -137,7 +137,7 @@
 			);
 			name = diagSwiftRealm;
 			productName = diagSwiftRealm;
-			productReference = 73B5BBED23CA0A7200D99BC7 /* diagSwiftRealm.app */;
+			productReference = 73B5BBED23CA0A7200D99BC7 /* Differential.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -396,7 +396,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.diagSwiftRealm;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Differential;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -414,7 +414,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.diagSwiftRealm;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Differential;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

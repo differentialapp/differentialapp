@@ -37,18 +37,24 @@ class SecondViewController: UIViewController {
     override func viewDidLoad() {
         view.addSubview(shipPic1)
         
-        shipPic1.center = CGPoint(x: 52.10828290506163, y: 646.0)
-        shipPic2.center = CGPoint(x: 255.85491373152524, y: 719.3333282470703)
+        
         
         if  selectedDiagnoses.count == 1 {
-            rocket1 = Rocket(diagnosis: selectedDiagnoses[0], imageContainer: shipPic1, arcContainer: arcView, preTestProbability: 10.0)
+            rocket1 = Rocket(diagnosis: selectedDiagnoses[0], imageContainer: shipPic1, arcContainer: arcView, preTestProbability: 10.0, arcOpensRight: true)
+            let x1 = rocket1!.move(yTouchValue: rocket1!.maxYbound)
+            shipPic1.center = CGPoint(x: x1, y: rocket1!.maxYbound)
         } else if selectedDiagnoses.count == 2 {
             view.bringSubviewToFront(arcView2)
-            rocket1 = Rocket(diagnosis: selectedDiagnoses[0], imageContainer: shipPic1, arcContainer: arcView, preTestProbability: 10.0)
-            rocket2 = Rocket(diagnosis: selectedDiagnoses[1], imageContainer: shipPic2, arcContainer: arcView2, preTestProbability: 10.0)
-            rocket2?.arcOpensRight = false
+            let angle = Double.pi / 3
+            shipPic2.transform = CGAffineTransform(rotationAngle: CGFloat(angle))
+            rocket1 = Rocket(diagnosis: selectedDiagnoses[0], imageContainer: shipPic1, arcContainer: arcView, preTestProbability: 10.0, arcOpensRight: true)
+            rocket2 = Rocket(diagnosis: selectedDiagnoses[1], imageContainer: shipPic2, arcContainer: arcView2, preTestProbability: 10.0, arcOpensRight: false)
             view.addSubview(shipPic2)
             view.bringSubviewToFront(shipPic2)
+            let x1 = rocket1!.move(yTouchValue: rocket1!.maxYbound)
+            shipPic1.center = CGPoint(x: x1, y: rocket1!.maxYbound)
+            let x2 = rocket2!.move(yTouchValue: rocket2!.maxYbound)
+            shipPic2.center = CGPoint(x: x2, y: rocket2!.maxYbound)
         }
     }
     
@@ -72,6 +78,8 @@ class SecondViewController: UIViewController {
                     //------------------
                     let xlocation = rocket2?.move(yTouchValue: ylocation!)
                     shipPic2.center = CGPoint(x: xlocation!, y: ylocation!)
+                    
+                    print(shipPic2.center)
                     
                     //Calculate PreTest Prob
                     rocket2?.setPreTest(yvalue: ylocation!)
@@ -204,10 +212,8 @@ class SecondViewController: UIViewController {
     
     @objc func launchAllRockets() {
         if rocket1?.factorSelected ?? false {
-            let finalPosition = rocket1?.launch()
-            UIView.animate(withDuration: 1.0, delay: 0, options: .curveEaseIn, animations: {
-                self.shipPic1.center = finalPosition!
-                }, completion: nil)
+            rocket1?.launch()
+            animateAlongMyPath(image: shipPic1, rocket: rocket1!)
             finalShowLabel1 = (rocket1?.createFinalLabel())!
             finalShowLabel1.center = CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height - 100)
             finalShowButton1 = createNumberButton(forWhat: "showLabel1")
@@ -215,10 +221,8 @@ class SecondViewController: UIViewController {
             view.addSubview(finalShowButton1!)
         }
         if rocket2?.factorSelected ?? false {
-            let finalPosition = rocket2?.launch()
-            UIView.animate(withDuration: 1.0, delay: 0, options: .curveEaseIn, animations: {
-                self.shipPic2.center = finalPosition!
-                }, completion: nil)
+            rocket2?.launch()
+            animateAlongMyPath(image: shipPic2, rocket: rocket2!)
             finalShowLabel2 = (rocket2?.createFinalLabel())!
             finalShowLabel2.center = CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height - 100)
             finalShowButton2 = createNumberButton(forWhat: "showLabel2")
@@ -229,6 +233,31 @@ class SecondViewController: UIViewController {
         finalShowBool = true
         view.bringSubviewToFront(finalShowLabel1)
         launchButton.removeFromSuperview()
+    }
+    
+    func animateAlongMyPath(image: UIImageView, rocket: Rocket) {
+        
+        let divisions: Double = 5
+        let intDiv = Int(divisions)
+        let startY: Double = Double(image.center.y)
+        let endY: Double = Double(rocket.finalYPosition)
+        let range: Double = Double(rocket.range)
+        
+        let deltaY = ( startY - endY ) / divisions
+        let deltaYCG = CGFloat(deltaY)
+        var newY: CGFloat =  CGFloat(startY)
+        var timeSum = 0.0
+        let timeTotal = (deltaY / range) * 3.0
+        let timeDelta = timeTotal / divisions  // For linear divide by divisions
+        
+        for _ in 1...intDiv {
+            newY = newY - deltaYCG
+            UIView.animate(withDuration: timeDelta, delay: timeSum, options: .curveLinear, animations: {
+                image.center = CGPoint(x: rocket.move(yTouchValue: newY), y: newY)
+            }, completion: nil)
+            //timeDelta = timeDelta / 3
+            timeSum = timeSum + timeDelta
+        }
     }
     
     // CREATE BUTTONS ABOVE FINAL RESULTS LABEL, TO ALLOW VIEWING EACH IN A TAB VIEW TYPE FORMAT
@@ -244,10 +273,8 @@ class SecondViewController: UIViewController {
             button.setTitle("Show: ", for: .normal)
             button.setImage(UIImage(systemName: "1.circle.fill"), for: .normal)
             button.center = CGPoint(x: UIScreen.main.bounds.width / 4, y: finalShowLabel1.frame.minY - 20)
-            //button.imageEdgeInsets = UIEdgeInsets(top: 50, left: 50, bottom: 50, right: 50)
             button.addTarget(self, action: #selector(bringView1ToFront), for: .touchUpInside)
         } else if forWhat == "showLabel2" {
-            
             button.setTitle("Show: ", for: .normal)
             button.setImage(UIImage(systemName: "2.circle.fill"), for: .normal)
             button.center = CGPoint(x: 3 * UIScreen.main.bounds.width / 4, y: finalShowLabel2.frame.minY - 20)

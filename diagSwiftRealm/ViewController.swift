@@ -20,6 +20,7 @@ class ViewController: UIViewController {
     var uniqueDiagnoses: [String] = []
     var queriedDiagnoses: [String] = []
     var selectedDiagnoses: [String] = []
+    var keyboardOpen: Bool = false
     
     var realm: Realm?
     
@@ -30,8 +31,8 @@ class ViewController: UIViewController {
         tableView.dataSource = self
         doneButton.isUserInteractionEnabled = false
         
-        
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
     func setup() {
@@ -105,6 +106,25 @@ class ViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let vc = segue.destination as! SecondViewController
         vc.selectedDiagnoses = selectedDiagnoses
+    }
+    
+    // HANDLE KEYBOARD OPENING
+    // -----------------------------------------------------------
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            if !keyboardOpen {
+                self.view.frame.origin.y -= keyboardSize.height
+                //tableView.frame.origin.y -= keyboardSize.height
+                keyboardOpen = true
+            }
+        }
+    }
+
+    @objc func keyboardWillHide(notification: NSNotification) {
+        self.view.frame.origin.y = 0
+        //tableView.frame.origin.y = 0
+        keyboardOpen = false
     }
     
 }

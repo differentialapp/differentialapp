@@ -1,15 +1,11 @@
 //
 //  ContributeViewController.swift
-//  diagSwiftRealm
-//
-//  Created by Brian Clow on 1/17/20.
-//  Copyright © 2020 Brian Clow. All rights reserved.
 //
 
 import UIKit
 import MessageUI
 
-class ContributeViewController: UIViewController, MFMailComposeViewControllerDelegate {
+class ContributeViewController: UIViewController, UIScrollViewDelegate, MFMailComposeViewControllerDelegate {
     
     @IBOutlet weak var factorField: UITextField!
     @IBOutlet weak var diagnosisField: UITextField!
@@ -18,11 +14,18 @@ class ContributeViewController: UIViewController, MFMailComposeViewControllerDel
     @IBOutlet weak var sourceField: UITextView!
     @IBOutlet weak var commentsField: UITextView!
     @IBOutlet weak var sendButton: UIButton!
+    @IBOutlet weak var scrollView: UIScrollView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        factorField.delegate = self
+        diagnosisField.delegate = self
+        posLRField.delegate = self
+        negLRField.delegate = self
+        sourceField.delegate = self
+        commentsField.delegate = self
+        scrollView.delegate = self
+        scrollView.contentSize.height = 498 
     }
     
     
@@ -50,11 +53,17 @@ class ContributeViewController: UIViewController, MFMailComposeViewControllerDel
         present(alertController, animated: true, completion: nil)
     }
     
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.x != 0 {
+            scrollView.contentOffset.x = 0
+        }
+    }
+    
     func sendEmail(factor: String, diagnosis: String, posLR: String, negLR: String, source: String, comment: String) {
         if MFMailComposeViewController.canSendMail() {
             let mail = MFMailComposeViewController()
             mail.mailComposeDelegate = self
-            mail.setToRecipients(["bdclow@protonmail.com"])
+            mail.setToRecipients(["differentialapp@protonmail.com"])
             mail.setSubject("Application Contribution")
             mail.setMessageBody(
                 """
@@ -65,7 +74,6 @@ class ContributeViewController: UIViewController, MFMailComposeViewControllerDel
                 Positive LR: \(posLR)
                 Negative LR: \(negLR)
                 Source: \(source)
-                
                 Comment: \(comment)
                 </p>
                 """, isHTML: true)
@@ -82,15 +90,23 @@ class ContributeViewController: UIViewController, MFMailComposeViewControllerDel
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
         controller.dismiss(animated: true)
     }
-
-//    @objc func keyboardWillShow(notification: NSNotification) {
-//        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-//            self.view.frame.origin.y -= keyboardSize.height
-//        }
-//    }
-//
-//    @objc func keyboardWillHide(notification: NSNotification) {
-//        self.view.frame.origin.y = 0
-//    }
     
 }
+
+
+extension ContributeViewController: UITextFieldDelegate, UITextViewDelegate  {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if (text == "\n") {
+            textView.resignFirstResponder()
+            return false
+        }
+        return true
+    }
+
+}
+
+

@@ -14,10 +14,10 @@
 		732F8CE723D0CC3A00B437E0 /* FactorSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732F8CE623D0CC3A00B437E0 /* FactorSelectorViewController.swift */; };
 		732F8CE923D0D07300B437E0 /* factorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732F8CE823D0D07300B437E0 /* factorCell.swift */; };
 		7395132723CE19AB005BEB40 /* diagnosisCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7395132623CE19AB005BEB40 /* diagnosisCell.swift */; };
-		7395132923CF5265005BEB40 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7395132823CF5265005BEB40 /* SecondViewController.swift */; };
+		7395132923CF5265005BEB40 /* RocketViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7395132823CF5265005BEB40 /* RocketViewController.swift */; };
 		73B5BBF123CA0A7200D99BC7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B5BBF023CA0A7200D99BC7 /* AppDelegate.swift */; };
 		73B5BBF323CA0A7200D99BC7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B5BBF223CA0A7200D99BC7 /* SceneDelegate.swift */; };
-		73B5BBF523CA0A7200D99BC7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B5BBF423CA0A7200D99BC7 /* ViewController.swift */; };
+		73B5BBF523CA0A7200D99BC7 /* DiagnosisViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B5BBF423CA0A7200D99BC7 /* DiagnosisViewController.swift */; };
 		73B5BBF823CA0A7200D99BC7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 73B5BBF623CA0A7200D99BC7 /* Main.storyboard */; };
 		73B5BBFA23CA0A7800D99BC7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 73B5BBF923CA0A7800D99BC7 /* Assets.xcassets */; };
 		73B5BBFD23CA0A7800D99BC7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 73B5BBFB23CA0A7800D99BC7 /* LaunchScreen.storyboard */; };
@@ -34,11 +34,11 @@
 		732F8CE623D0CC3A00B437E0 /* FactorSelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FactorSelectorViewController.swift; sourceTree = "<group>"; };
 		732F8CE823D0D07300B437E0 /* factorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = factorCell.swift; sourceTree = "<group>"; };
 		7395132623CE19AB005BEB40 /* diagnosisCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = diagnosisCell.swift; sourceTree = "<group>"; };
-		7395132823CF5265005BEB40 /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
+		7395132823CF5265005BEB40 /* RocketViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RocketViewController.swift; sourceTree = "<group>"; };
 		73B5BBED23CA0A7200D99BC7 /* Differential.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Differential.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		73B5BBF023CA0A7200D99BC7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		73B5BBF223CA0A7200D99BC7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		73B5BBF423CA0A7200D99BC7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		73B5BBF423CA0A7200D99BC7 /* DiagnosisViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagnosisViewController.swift; sourceTree = "<group>"; };
 		73B5BBF723CA0A7200D99BC7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		73B5BBF923CA0A7800D99BC7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		73B5BBFC23CA0A7800D99BC7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -92,8 +92,8 @@
 			children = (
 				73B5BBF023CA0A7200D99BC7 /* AppDelegate.swift */,
 				73B5BBF223CA0A7200D99BC7 /* SceneDelegate.swift */,
-				73B5BBF423CA0A7200D99BC7 /* ViewController.swift */,
-				7395132823CF5265005BEB40 /* SecondViewController.swift */,
+				73B5BBF423CA0A7200D99BC7 /* DiagnosisViewController.swift */,
+				7395132823CF5265005BEB40 /* RocketViewController.swift */,
 				732F8CE623D0CC3A00B437E0 /* FactorSelectorViewController.swift */,
 				73B5BBF623CA0A7200D99BC7 /* Main.storyboard */,
 				7315C88123D2273F007852A2 /* ContributeViewController.swift */,
@@ -234,9 +234,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7395132923CF5265005BEB40 /* SecondViewController.swift in Sources */,
+				7395132923CF5265005BEB40 /* RocketViewController.swift in Sources */,
 				7315C88223D2273F007852A2 /* ContributeViewController.swift in Sources */,
-				73B5BBF523CA0A7200D99BC7 /* ViewController.swift in Sources */,
+				73B5BBF523CA0A7200D99BC7 /* DiagnosisViewController.swift in Sources */,
 				7395132723CE19AB005BEB40 /* diagnosisCell.swift in Sources */,
 				732F8CE523CFB26500B437E0 /* arcClass.swift in Sources */,
 				732F8CE723D0CC3A00B437E0 /* FactorSelectorViewController.swift in Sources */,
@@ -390,12 +390,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7R2HWDW5MZ;
 				INFOPLIST_FILE = diagSwiftRealm/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.diagSwiftRealm;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bdclow.Differential;
 				PRODUCT_NAME = Differential;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -408,12 +409,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7R2HWDW5MZ;
 				INFOPLIST_FILE = diagSwiftRealm/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.diagSwiftRealm;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bdclow.Differential;
 				PRODUCT_NAME = Differential;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

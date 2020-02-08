@@ -2,8 +2,6 @@
 //  SceneDelegate.swift
 //  diagSwiftRealm
 //
-//  Created by Brian Clow on 1/11/20.
-//  Copyright © 2020 Brian Clow. All rights reserved.
 //
 
 import UIKit

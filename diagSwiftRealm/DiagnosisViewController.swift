@@ -2,14 +2,12 @@
 //  ViewController.swift
 //  diagSwiftRealm
 //
-//  Created by Brian Clow on 1/11/20.
-//  Copyright © 2020 Brian Clow. All rights reserved.
 //
 
 import UIKit
 import RealmSwift
 
-class ViewController: UIViewController {
+class DiagnosisViewController: UIViewController {
 
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
@@ -21,7 +19,6 @@ class ViewController: UIViewController {
     var queriedDiagnoses: [String] = []
     var selectedDiagnoses: [String] = []
     var keyboardOpen: Bool = false
-    
     var realm: Realm?
     
     override func viewDidLoad() {
@@ -29,6 +26,7 @@ class ViewController: UIViewController {
         setup()
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.contentSize.height = 400
         doneButton.isUserInteractionEnabled = false
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -101,10 +99,11 @@ class ViewController: UIViewController {
         tableView.reloadData()
     }
     
+    // SEGUE PREPARATION
     // -----------------------------------------------------------
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let vc = segue.destination as! SecondViewController
+        let vc = segue.destination as! RocketViewController
         vc.selectedDiagnoses = selectedDiagnoses
     }
     
@@ -114,7 +113,7 @@ class ViewController: UIViewController {
     @objc func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             if !keyboardOpen {
-                self.view.frame.origin.y -= keyboardSize.height
+                self.view.frame.origin.y -= (keyboardSize.height)
                 //tableView.frame.origin.y -= keyboardSize.height
                 keyboardOpen = true
             }
@@ -132,14 +131,14 @@ class ViewController: UIViewController {
 // DELEGATES FOR SEARCH / SEARCH BAR
 // -----------------------------------------------------------
 
-extension ViewController: UISearchBarDelegate {
+extension DiagnosisViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchController.isActive = false
+        searchBar.resignFirstResponder()
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        print("Search text is \(searchText)")
         if let searchText = searchBar.text {
             filterDiagsFromSearch(searchTerm: searchText)
         }
@@ -147,7 +146,7 @@ extension ViewController: UISearchBarDelegate {
     }
 }
 
-extension ViewController: UISearchResultsUpdating {
+extension DiagnosisViewController: UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
         if let searchText = searchController.searchBar.text {
@@ -159,7 +158,7 @@ extension ViewController: UISearchResultsUpdating {
 // DELEGATES FOR TABLE
 // -----------------------------------------------------------
 
-extension ViewController: UITableViewDataSource, UITableViewDelegate {
+extension DiagnosisViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // LIMITS CHOICES TO 2, ONLY ADDS IF UNIQUE, OTHERWISE SENDS ALERT

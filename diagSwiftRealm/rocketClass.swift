@@ -2,8 +2,6 @@
 //  rocketClass.swift
 //  diagSwiftRealm
 //
-//  Created by Brian Clow on 1/18/20.
-//  Copyright © 2020 Brian Clow. All rights reserved.
 //
 
 import UIKit
@@ -22,7 +20,6 @@ class Rocket {
     var LR: Double
     var factorSelected: Bool = false
     var arcOpensRight: Bool = true
-    var initialYPosition: CGFloat
     var finalXPosition: CGFloat
     var finalYPosition: CGFloat
     var range: CGFloat
@@ -37,12 +34,6 @@ class Rocket {
         //Set bounds for movement
         //--------------------
         // Lower on screen, larger Y num
-//        if arcOpensRight {
-//            self.maxYbound = arcContainer.center.y + arcContainer.frame.height / 2.5
-//        } else {
-//            self.maxYbound = arcContainer.center.y + arcContainer.frame.height / 2
-//        }
-        
         if arcOpensRight {
             self.maxYbound = 0.8 * (arcContainer.superview?.frame.height ?? arcContainer.frame.height)
         } else {
@@ -55,7 +46,6 @@ class Rocket {
         
         self.LR = 1.0 //default values
         self.postTestProbability = self.preTestProbability
-        self.initialYPosition = self.imageContainer.center.y
         self.finalXPosition = 10.0
         self.finalYPosition = 10.0
     }
@@ -67,6 +57,7 @@ class Rocket {
         
         label.text = labelText
         label.backgroundColor = UIColor.white
+        label.textColor = .black
         label.textAlignment = .center
         label.numberOfLines = 3
         label.layer.masksToBounds = true
@@ -105,7 +96,7 @@ class Rocket {
         
         if self.arcOpensRight {
             let ylocation = containWithInBounds(yvalue: yTouchValue)
-            //self.initialYPosition = ylocation
+
             // SX AND SY ARE THE FRAME LOCATIONS
             let sxvar = (arcContainer.center.x - arcContainer.frame.width / 2)
             
@@ -131,6 +122,7 @@ class Rocket {
             // CX IS THE X COMPONENT OF THE CENTER OF THE ARC, WHICH IS DEFINED ELSEWHERE AS WIDTH OF FRAME / 2
             // N.B. for this function this is SX **MINUS** 3W, as the arc opens to the left, the center is to the left of the frame
             let w = arcContainer.frame.width
+            print("arcCont width", w)
             let cxvar = (arcContainer.frame.width * 2) - sxvar
             let cyvar = (arcContainer.frame.height / 2) + (arcContainer.center.y - arcContainer.frame.height/2)
             let bvar2 = ( pow(2.8*w,2) - pow(cyvar - tyvar, 2) )
@@ -144,9 +136,6 @@ class Rocket {
         if self.factor == nil {
             print("Can't launch, no factor data")
         } else {
-            print("LAUNCHING ROCKET")
-
-               
             if negLRBoolean {
                 self.LR = self.factor!.negLR
             } else {
@@ -166,19 +155,14 @@ class Rocket {
             let preTestOdds = (self.preTestProbability/100) / (1 - (self.preTestProbability/100))
             let postTestOdds = preTestOdds * self.LR
             self.postTestProbability = (postTestOdds / (1 + postTestOdds))
-           
-            print("Post Test Probability", self.postTestProbability)
-           
+
             let range = Double(self.range)
-            print("Range:",range)
             let yposition = (range - (self.postTestProbability * range)) + Double(self.minYbound)
             
             let yCG = CGFloat(yposition)
-            print("Final Y Position: ", yCG)
             let xposition = self.move(yTouchValue: yCG)
             self.finalXPosition = xposition
             self.finalYPosition = yCG
-           // return finalPosition
         }
         
     }

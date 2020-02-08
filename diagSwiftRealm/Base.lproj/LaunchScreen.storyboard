@@ -15,9 +15,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tok-ec-cjj">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tok-ec-cjj">
+                                <rect key="frame" x="0.0" y="20" width="414" height="856"/>
                                 <color key="backgroundColor" red="0.069934703371067775" green="0.069934703371067775" blue="0.069934703371067775" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="u5L-9p-5SW">
@@ -46,8 +45,12 @@
                         <color key="backgroundColor" red="0.11638467098764804" green="0.11638467098764804" blue="0.11638467098764804" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="tok-ec-cjj" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="00c-z0-oPk"/>
+                            <constraint firstItem="tok-ec-cjj" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" constant="20" symbolic="YES" id="43Z-Xx-gNo"/>
                             <constraint firstItem="u5L-9p-5SW" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="BYO-Ct-5kO"/>
+                            <constraint firstItem="tok-ec-cjj" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="I0c-mg-aNv"/>
                             <constraint firstItem="u5L-9p-5SW" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="bZo-Jp-uMg"/>
+                            <constraint firstAttribute="bottom" secondItem="tok-ec-cjj" secondAttribute="bottom" constant="20" symbolic="YES" id="hdC-Sf-moY"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>

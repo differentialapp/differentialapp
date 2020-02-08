@@ -2,20 +2,18 @@
 //  SecondViewController.swift
 //  diagSwiftRealm
 //
-//  Created by Brian Clow on 1/15/20.
-//  Copyright © 2020 Brian Clow. All rights reserved.
 //
 
 import Foundation
 import UIKit
 
-class SecondViewController: UIViewController {
+class RocketViewController: UIViewController {
     
     
     @IBOutlet weak var shipPic1: UIImageView!
     @IBOutlet weak var shipPic2: UIImageView!
-    @IBOutlet weak var arcView: CounterView!
-    @IBOutlet weak var arcView2: CounterView2!
+    @IBOutlet weak var arcView: DrawArcView1!
+    @IBOutlet weak var arcView2: DrawArcView2!
     @IBOutlet weak var topDirectiveLabel: UILabel!
     @IBOutlet weak var readyButton: UIButton!
     
@@ -37,29 +35,47 @@ class SecondViewController: UIViewController {
     override func viewDidLoad() {
         view.addSubview(shipPic1)
         
-        
-        
-        if  selectedDiagnoses.count == 1 {
-            rocket1 = Rocket(diagnosis: selectedDiagnoses[0], imageContainer: shipPic1, arcContainer: arcView, preTestProbability: 10.0, arcOpensRight: true)
-            let x1 = rocket1!.move(yTouchValue: rocket1!.maxYbound)
-            shipPic1.center = CGPoint(x: x1, y: rocket1!.maxYbound)
-        } else if selectedDiagnoses.count == 2 {
-            view.bringSubviewToFront(arcView2)
-            let angle = Double.pi / 3
-            shipPic2.transform = CGAffineTransform(rotationAngle: CGFloat(angle))
-            rocket1 = Rocket(diagnosis: selectedDiagnoses[0], imageContainer: shipPic1, arcContainer: arcView, preTestProbability: 10.0, arcOpensRight: true)
-            rocket2 = Rocket(diagnosis: selectedDiagnoses[1], imageContainer: shipPic2, arcContainer: arcView2, preTestProbability: 10.0, arcOpensRight: false)
-            view.addSubview(shipPic2)
-            view.bringSubviewToFront(shipPic2)
-            let x1 = rocket1!.move(yTouchValue: rocket1!.maxYbound)
-            shipPic1.center = CGPoint(x: x1, y: rocket1!.maxYbound)
-            let x2 = rocket2!.move(yTouchValue: rocket2!.maxYbound)
-            shipPic2.center = CGPoint(x: x2, y: rocket2!.maxYbound)
-        }
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        setUpRockets()
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
+    
+    func setUpRockets() {
+        if  selectedDiagnoses.count == 1 {
+            //Create rocket object(s), place along arc
+            rocket1 = Rocket(diagnosis: selectedDiagnoses[0], imageContainer: shipPic1, arcContainer: arcView, preTestProbability: 10.0, arcOpensRight: true)
+            let x1 = rocket1!.move(yTouchValue: rocket1!.maxYbound)
+            shipPic1.center = CGPoint(x: x1, y: rocket1!.maxYbound)
+            view.addSubview(shipPic1)
+            view.bringSubviewToFront(arcView)
+            view.bringSubviewToFront(shipPic1)
+        } else if selectedDiagnoses.count == 2 {
+            
+            //This just turns second rocket to point up
+            let angle = Double.pi / 3
+            shipPic2.transform = CGAffineTransform(rotationAngle: CGFloat(angle))
+            
+            //Create rocket object(s)
+            rocket1 = Rocket(diagnosis: selectedDiagnoses[0], imageContainer: shipPic1, arcContainer: arcView, preTestProbability: 1.0, arcOpensRight: true)
+            rocket2 = Rocket(diagnosis: selectedDiagnoses[1], imageContainer: shipPic2, arcContainer: arcView2, preTestProbability: 1.0, arcOpensRight: false)
+
+            
+            //Place ships along arc
+            let x1 = rocket1!.move(yTouchValue: rocket1!.maxYbound)
+            shipPic1.center = CGPoint(x: x1, y: rocket1!.maxYbound)
+
+            let y2 = rocket2?.maxYbound
+            let x2 = rocket2!.move(yTouchValue: y2!)
+            rocket2?.setPreTest(yvalue: y2!)
+            shipPic2.center = CGPoint(x: x2, y: y2!)
+            view.addSubview(shipPic1)
+            view.bringSubviewToFront(arcView)
+            view.bringSubviewToFront(shipPic1)
+            view.addSubview(shipPic2)
+            view.bringSubviewToFront(arcView2)
+            view.bringSubviewToFront(shipPic2)
+        }
     }
     
     // HANDLE TOUCH EVENTS
@@ -77,14 +93,15 @@ class SecondViewController: UIViewController {
                     //Move Ship
                     //------------------
                     let xlocation = rocket2?.move(yTouchValue: ylocation!)
-                    shipPic2.center = CGPoint(x: xlocation!, y: ylocation!)
                     
-                    print(shipPic2.center)
+                    print("2 xloc", xlocation!)
+                    print("2 yloc", ylocation!)
+                    shipPic2.center = CGPoint(x: xlocation!, y: ylocation!)
                     
                     //Calculate PreTest Prob
                     rocket2?.setPreTest(yvalue: ylocation!)
                     
-                    //Create label
+                    //Create label to temporarily display pre-test probability
                     preTestLabel2 = rocket2?.makePreTestLabel() ?? UILabel()
                     preTestLabel2.center = CGPoint(x: xlocation! - 60, y: ylocation! + 60)
                     view.addSubview(preTestLabel2)
@@ -100,9 +117,9 @@ class SecondViewController: UIViewController {
                     //Calculate PreTest Prob
                     rocket1?.setPreTest(yvalue: ylocation!)
                     
-                    //Create label
+                    //Create label to temporarily display pre-test probability
                     preTestLabel = rocket1?.makePreTestLabel() ?? UILabel()
-                    preTestLabel.center = CGPoint(x: xlocation! + 60, y: ylocation! + 60)
+                    preTestLabel.center = CGPoint(x: xlocation! + 60, y: ylocation! - 60)
                     view.addSubview(preTestLabel)
                 }
                 
@@ -135,6 +152,8 @@ class SecondViewController: UIViewController {
                     //------------------
                     
                     let xlocation = rocket2?.move(yTouchValue: ylocation!)
+                    print("2 xloc", xlocation!)
+                    print("2 yloc", ylocation!)
                     shipPic2.center = CGPoint(x: xlocation!, y: ylocation!)
 
                     //Calculate PreTest Prob and Update Label
@@ -160,7 +179,7 @@ class SecondViewController: UIViewController {
                     //Calculate PreTest Prob and Update Label
                     let labelText = "\(rocket1?.diagnosis ?? "Not Found")\nPre-test Probability: \n" + String(format:"%.1f", rocket1!.preTestProbability) + "%"
                     preTestLabel.text = labelText
-                    preTestLabel.center = CGPoint(x: xlocation! + 60, y: ylocation! + 60)
+                    preTestLabel.center = CGPoint(x: xlocation! + 60, y: ylocation! - 60)
                 }
 
             }
@@ -237,6 +256,7 @@ class SecondViewController: UIViewController {
     
     func animateAlongMyPath(image: UIImageView, rocket: Rocket) {
         
+        //Divide animation path into 5 segments, as have to move along Bezier curve
         let divisions: Double = 5
         let intDiv = Int(divisions)
         let startY: Double = Double(image.center.y)

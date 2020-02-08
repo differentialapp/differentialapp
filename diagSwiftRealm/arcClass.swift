@@ -2,13 +2,11 @@
 //  arcClass.swift
 //  diagSwiftRealm
 //
-//  Created by Brian Clow on 1/15/20.
-//  Copyright © 2020 Brian Clow. All rights reserved.
 //
 
 import UIKit
 
-@IBDesignable class CounterView: UIView {
+@IBDesignable class DrawArcView1: UIView {
   
   private struct Constants {
     static let lineWidth: CGFloat = 5.0
@@ -47,7 +45,7 @@ import UIKit
   }
 }
 
-@IBDesignable class CounterView2: UIView {
+@IBDesignable class DrawArcView2: UIView {
   
   private struct Constants {
     static let lineWidth: CGFloat = 5.0

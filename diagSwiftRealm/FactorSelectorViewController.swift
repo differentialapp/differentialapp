@@ -2,8 +2,6 @@
 //  FactorSelectorViewController.swift
 //  diagSwiftRealm
 //
-//  Created by Brian Clow on 1/16/20.
-//  Copyright © 2020 Brian Clow. All rights reserved.
 //
 
 import Foundation
@@ -55,7 +53,7 @@ class FactorSelectorViewController: UIViewController {
         
         // PASSES SELECTION BACK TO ROCKET OBJECT
         
-        let vc = segue.destination as! SecondViewController
+        let vc = segue.destination as! RocketViewController
         if factorNumber == 1 {
             vc.rocket1?.factor = selectedFactor
             vc.rocket1?.negLRBoolean = negLRBool

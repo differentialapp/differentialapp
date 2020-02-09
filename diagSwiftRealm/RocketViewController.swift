@@ -9,7 +9,6 @@ import UIKit
 
 class RocketViewController: UIViewController {
     
-    
     @IBOutlet weak var shipPic1: UIImageView!
     @IBOutlet weak var shipPic2: UIImageView!
     @IBOutlet weak var arcView: DrawArcView1!
@@ -34,10 +33,11 @@ class RocketViewController: UIViewController {
     
     override func viewDidLoad() {
         view.addSubview(shipPic1)
+        setUpRockets()
         
     }
     override func viewDidAppear(_ animated: Bool) {
-        setUpRockets()
+        
     }
     
     
@@ -193,14 +193,19 @@ class RocketViewController: UIViewController {
         }
     }
     
-    // IBACTIONS: Change between different modes
+    // IBACTIONS: Change between different modes (from pre test selection
+    // to test selection)
     // -----------------------------------------------------------
     
-    @IBAction func changeToSelectionMode(_ sender: Any) {
+    @IBAction func changeToSelectionMode(_ sender: UIButton) {
         readyForSelection = true
         topDirectiveLabel.text = "Now tap each ship to select a test / exam finding"
-        readyButton.removeFromSuperview()
+        sender.isHidden = true
+        sender.isUserInteractionEnabled = false
+        
     }
+    
+    // Dismisses test selection modal
     
     @IBAction func backUpTo2(_ sender: UIStoryboardSegue) {
         launchButton.setTitle("Launch!", for: .normal)
@@ -212,7 +217,7 @@ class RocketViewController: UIViewController {
         view.addSubview(launchButton)
     }
     
-    // SEGUE PREP
+    // SEGUE PREP (for transition to test selection modal)
     // -----------------------------------------------------------
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
